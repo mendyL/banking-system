@@ -19,7 +19,7 @@ banking-system/
 ## ⚙️ Environnement technique
 
 - **Java 21**, **Spring Boot 3**
-- **Angular 19** + Angular Material
+- **Angular 19** + PrimeNG
 - **PostgreSQL** 16
 - **IBM MQ Series**
 - **Docker** & `docker-compose`
