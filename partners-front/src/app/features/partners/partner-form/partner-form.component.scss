@@ -1,0 +1,24 @@
+/* Augmente l'espacement entre les éléments du formulaire */
+.mb-6 {
+    margin-bottom: 2.5rem;
+  }
+  
+  /* Style pour les messages d'erreur */
+  .error-message {
+    display: block;
+    color: #f44336; /* Rouge */
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Assure que les messages d'erreur sont bien positionnés sous les champs */
+  p-inputGroup + .error-message {
+    margin-top: 0.5rem;
+  }
+  
+
+  .btn-end {
+        display: flex;
+        justify-content: space-evenly;
+
+  }

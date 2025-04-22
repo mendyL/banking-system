@@ -1,0 +1,153 @@
+<form [formGroup]="partnerForm" (ngSubmit)="onSubmit()" class="p-fluid">
+  <!-- Première colonne -->
+  <div class="mb-6">
+      <div class="field">
+          <p-inputGroup class="md:!w-80">
+              <p-inputGroupAddon>
+                  <i class="pi pi-id-card"></i>
+              </p-inputGroupAddon>
+              <p-floatlabel variant="in">
+                  <input pInputText
+                         id="alias"
+                         type="text"
+                         pInputText
+                         formControlName="alias"
+                         class="w-full"
+                         [ngClass]="{'ng-invalid ng-dirty': partnerForm.get('alias')?.invalid && partnerForm.get('alias')?.touched}">
+                  <label for="in_label">Alias</label>
+              </p-floatlabel>
+          </p-inputGroup>
+          @if (partnerForm.get('alias')?.invalid && partnerForm.get('alias')?.touched) {
+              <small class="error-message">Alias is required</small>
+          }
+      </div>
+  </div>
+
+  <!-- Type Input -->
+  <div class="mb-6">
+      <p-inputGroup>
+          <p-inputGroupAddon>
+              <i class="pi pi-tag"></i>
+          </p-inputGroupAddon>
+          <p-floatlabel variant="in">
+              <input
+                  id="type"
+                  type="text"
+                  pInputText
+                  formControlName="type"
+                  class="w-full"
+                  [ngClass]="{'ng-invalid ng-dirty': partnerForm.get('type')?.invalid && partnerForm.get('type')?.touched}"
+              />
+              <label for="in_label">Type</label>
+          </p-floatlabel>
+      </p-inputGroup>
+      @if (partnerForm.get('type')?.invalid && partnerForm.get('type')?.touched) {
+          <small class="error-message">Type is required</small>
+      }
+  </div>
+
+  <!-- Direction Select -->
+  <div class="mb-6">
+      <p-inputGroup>
+          <p-inputGroupAddon>
+              <i class="pi pi-directions"></i>
+          </p-inputGroupAddon>
+          <p-float-label>
+              <p-select
+                  id="direction"
+                  [options]="directionOptions"
+                  formControlName="direction"
+                  placeholder="Select Direction"
+                  class="w-full"
+                  [ngClass]="{'ng-invalid ng-dirty': partnerForm.get('direction')?.invalid && partnerForm.get('direction')?.touched}"
+              ></p-select>
+              <label for="in_label">Direction</label>
+          </p-float-label>
+      </p-inputGroup>
+      @if (partnerForm.get('direction')?.invalid && partnerForm.get('direction')?.touched) {
+          <small class="error-message">Direction is required</small>
+      }
+  </div>
+
+  <!-- Application Input -->
+  <div class="mb-6">
+      <p-inputGroup>
+          <p-inputGroupAddon>
+              <i class="pi pi-desktop"></i>
+          </p-inputGroupAddon>
+          <input
+              id="application"
+              type="text"
+              pInputText
+              formControlName="application"
+              class="w-full"
+          />
+      </p-inputGroup>
+  </div>
+
+  <!-- Processed Flow Type Select -->
+  <div class="mb-6">
+      <p-inputGroup>
+          <p-inputGroupAddon>
+              <i class="pi pi-sitemap"></i>
+          </p-inputGroupAddon>
+          <p-float-label>
+              <p-select
+                  id="processedFlowType"
+                  [options]="flowTypeOptions"
+                  formControlName="processedFlowType"
+                  placeholder="Select Flow Type"
+                  class="w-full"
+                  [ngClass]="{'ng-invalid ng-dirty': partnerForm.get('processedFlowType')?.invalid && partnerForm.get('processedFlowType')?.touched}"
+              ></p-select>
+              <label for="in_label">Processed Flow Type*</label>
+          </p-float-label>
+      </p-inputGroup>
+      @if (partnerForm.get('processedFlowType')?.invalid && partnerForm.get('processedFlowType')?.touched) {
+          <small class="error-message">Processed Flow Type is required</small>
+      }
+  </div>
+
+  <!-- Description Textarea -->
+  <div class="mb-6">
+      <p-inputGroup>
+          <p-inputGroupAddon>
+              <i class="pi pi-align-left"></i>
+          </p-inputGroupAddon>
+          <p-float-label>
+              <textarea
+                  id="description"
+                  pInputTextarea
+                  formControlName="description"
+                  [rows]="5"
+                  class="w-full"
+                  [ngClass]="{'ng-invalid ng-dirty': partnerForm.get('description')?.invalid && partnerForm.get('description')?.touched}"
+              ></textarea>
+              <label for="in_label">Description *</label>
+          </p-float-label>
+      </p-inputGroup>
+      @if (partnerForm.get('description')?.invalid && partnerForm.get('description')?.touched) {
+          <small class="error-message">Description is required</small>
+      }
+  </div>
+
+  <!-- Buttons -->
+  <div class="flex btn-end gap-3 mt-5">
+      <button
+          pButton
+          type="button"
+          icon="pi pi-times"
+          label="Cancel"
+          class="p-button-outlined p-button-secondary"
+          (click)="onCancel()"
+      ></button>
+      <button
+          pButton
+          type="submit"
+          icon="pi pi-check"
+          label="Save"
+          class="p-button-primary"
+          [disabled]="partnerForm.invalid"
+      ></button>
+  </div>
+</form>

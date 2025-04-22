@@ -1,0 +1,28 @@
+<div class="grid">
+    <div class="col-12 md:col-6">
+      <p-card header="Messages Management" styleClass="h-full">
+        <p>
+          View and manage banking messages received from back-office applications via IBM MQ Series.
+        </p>
+        <ng-template pTemplate="footer">
+          <div class="flex justify-content-end">
+            <button pButton label="View Messages" icon="pi pi-envelope" [routerLink]="['/messages']"></button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+    
+    <div class="col-12 md:col-6">
+      <p-card header="Partners Management" styleClass="h-full">
+        <p>
+          Configure MQ partners for message routing and processing.
+        </p>
+        <ng-template pTemplate="footer">
+          <div class="flex justify-content-end">
+            <button pButton label="Manage Partners" icon="pi pi-users" [routerLink]="['/partners']"></button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+  

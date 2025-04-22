@@ -1,0 +1,6 @@
+**/target
+partners-front/node_modules
+partners-front/dist
+banking-queue-service/target
+banking-partner-service/target
+.git

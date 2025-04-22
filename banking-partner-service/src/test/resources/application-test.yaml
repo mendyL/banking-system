@@ -1,0 +1,5 @@
+
+service:
+  message-queue:
+    url: http://localhost:8081/api
+    messagesByPartner: /messages/partners

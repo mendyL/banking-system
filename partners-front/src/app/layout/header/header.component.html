@@ -1,0 +1,29 @@
+<p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="start">
+      <span class="text-xl font-bold" [routerLink]="['/']" style="cursor: pointer;">{{ title }}</span>
+    </ng-template>
+    
+    <ng-template pTemplate="center">
+      <div class="flex gap-3">
+        <p-button 
+          label="Home" 
+          icon="pi pi-home" 
+          [routerLink]="['/home']" 
+          routerLinkActive="p-button-outlined"
+          styleClass="p-button-text"></p-button>
+        <p-button 
+          label="Messages" 
+          icon="pi pi-envelope" 
+          [routerLink]="['/messages']" 
+          routerLinkActive="p-button-outlined"
+          styleClass="p-button-text"></p-button>
+        <p-button 
+          label="Partners" 
+          icon="pi pi-users" 
+          [routerLink]="['/partners']" 
+          routerLinkActive="p-button-outlined"
+          styleClass="p-button-text"></p-button>
+      </div>
+    </ng-template>
+  </p-toolbar>
+  

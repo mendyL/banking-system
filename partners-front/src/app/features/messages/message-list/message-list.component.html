@@ -1,0 +1,105 @@
+<div class="messages-container">
+  <!-- Header avec titre et actions -->
+  <div class="messages-header">
+    <h1 class="messages-title">Messages</h1>
+    <div class="messages-actions">
+
+    </div>
+  </div>
+
+  <!-- État de chargement -->
+  @if (loading(); as isLoading) {
+    <div class="loading-container">
+      <p-progressSpinner strokeWidth="4" animationDuration=".5s"></p-progressSpinner>
+      <span class="loading-text">Loading messages...</span>
+    </div>
+  }
+
+  <!-- Affichage des erreurs -->
+  @if (error(); as err) {
+    <p-message severity="error" [text]="err" styleClass="w-full mb-3"></p-message>
+  }
+
+  <!-- Tableau de messages -->
+  <p-card styleClass="messages-card" [style]="{'box-shadow': '0 4px 12px rgba(0,0,0,0.05)'}">
+    <p-table 
+      [value]="messages()" 
+      [paginator]="true" 
+      [rows]="10" 
+      [showCurrentPageReport]="true"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [loading]="loading()"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} messages"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      styleClass="p-datatable-sm p-datatable-hoverable-rows"
+      responsiveLayout="scroll">
+      
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="messageId">Message ID <p-sortIcon field="messageId"></p-sortIcon></th>
+          <th style="width: 120px">Actions</th>
+        </tr>
+      </ng-template>
+      
+      <ng-template pTemplate="body" let-message>
+        <tr class="message-row">
+          <td>
+            <span class="message-id">{{ message.messageId }}</span>
+          </td>
+          <td>
+            <div class="message-actions">
+              <button 
+                pButton 
+                icon="pi pi-eye" 
+                class="p-button-rounded p-button-info p-button-sm"
+                (click)="showMessageDetail(message)"
+                pTooltip="View Details"
+                tooltipPosition="left">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      
+      <ng-template pTemplate="emptymessage">
+        <div class="empty-state">
+          <i class="pi pi-inbox empty-icon"></i>
+          <p class="empty-text">No messages found</p>
+        </div>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+
+<!-- Dialogue de détails -->
+<p-dialog 
+  [(visible)]="showDetailDialog" 
+  [style]="{width: '550px', maxWidth: '95vw'}" 
+  [modal]="true" 
+  header="Message Details"
+  [draggable]="false" 
+  [resizable]="false"
+  styleClass="message-detail-dialog"
+  [showHeader]="true"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [breakpoints]="{'960px': '75vw', '640px': '90vw'}">
+
+  @if (selectedMessage(); as msg) {
+    <div class="message-detail-container">
+      <app-message-detail [message]="msg"></app-message-detail>
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <button 
+        pButton 
+        label="Cancel" 
+        icon="pi pi-times" 
+        class="p-button-text" 
+        (click)="hideDialog()">
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>

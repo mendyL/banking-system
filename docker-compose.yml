@@ -1,0 +1,108 @@
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    platform: linux/arm64
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: banking
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - banking-network
+
+  ibmmq:
+    image: icr.io/ibm-messaging/mq:latest
+    platform: linux/amd64
+    environment:
+      LICENSE: accept
+      MQ_QMGR_NAME: QM1
+      MQ_APP_PASSWORD: admin
+    ports:
+      - "1414:1414"
+      - "9443:9443"
+    volumes:
+      - ibmmq-data:/var/mqm
+    healthcheck:
+      test: ["CMD","dspmq","-m","QM1"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+    networks:
+      - banking-network
+
+  partner-service:
+    build:
+      context: .
+      dockerfile: banking-partner-service/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ibmmq:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL:      jdbc:postgresql://postgres:5432/banking
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+    networks:
+      - banking-network
+
+  queue-service:
+    build:
+      context: .
+      dockerfile: banking-queue-service/Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ibmmq:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL:      jdbc:postgresql://postgres:5432/banking
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      IBM_MQ_HOST:                ibmmq
+      IBM_MQ_PORT:                1414
+      IBM_MQ_CONNAME:             ibmmq(1414)
+      IBM_MQ_MANAGER:             QM1
+      IBM_MQ_CHANNEL:             DEV.APP.SVRCONN
+      IBM_MQ_USER:                app
+      IBM_MQ_PASSWORD:            admin
+      IBM_MQ_QUEUE:               DEV.QUEUE.1
+
+    networks:
+      - banking-network
+
+  frontend:
+    build:
+      context: partners-front
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    depends_on:
+      partner-service:
+        condition: service_started
+      queue-service:
+        condition: service_started
+    networks:
+      - banking-network
+
+networks:
+  banking-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  ibmmq-data:
